@@ -1,7 +1,6 @@
 export default class ToDoItem {
-    private id: string = new Date().getTime().toString();
 
-    constructor(public description: string, public completed: boolean = false) {
+    constructor(public description: string, public completed: boolean = false, public id: string = "") {
 
     }
 

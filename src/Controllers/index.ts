@@ -1,4 +1,4 @@
-import { Application, Request, Response, NextFunction } from 'express';
+import { Application } from 'express';
 import toDoController from './ToDoController';
 
 const controllers = (app: Application) => {
