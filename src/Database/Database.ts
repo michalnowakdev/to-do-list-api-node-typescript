@@ -1,12 +1,15 @@
 import mongodb from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const MongoClient = mongodb.MongoClient;
 
 let _db: mongodb.Db;
-const uri = "mongodb://127.0.0.1:27017/todoapp";
+const connectionString = process.env.DB_CONNECTION_STRING || "";
 
 export const mongoConnect = (callback: Function) => {
-    MongoClient.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
+    MongoClient.connect(connectionString, { useUnifiedTopology: true, useNewUrlParser: true })
         .then(client => {
             console.log("Connected");
             _db = client.db();

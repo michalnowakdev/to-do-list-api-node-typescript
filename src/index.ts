@@ -4,7 +4,7 @@ import Controllers from './Controllers';
 import Middlewares from './Middlewares';
 import { mongoConnect } from './Database/Database';
 
-const port: number = 5000 || process.env.PORT;
+const port = process.env.PORT;
 const app: express.Application = express();
 
 Middlewares(app);
