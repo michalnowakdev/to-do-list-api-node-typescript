@@ -18,34 +18,30 @@ export default class ToDoService {
     getToDoItems = async (): Promise<ToDoItem[]> => {
         const db: Db = getDb();
         const items = await db.collection(collectionName).find().toArray();
-        debugger;
-
         return items.length ? items.map(({ description, id, completed }) => new ToDoItem(description, completed, id)) : [];
     }
 
-    updateTask = async (id: string, description: string, completed: boolean): Promise<ToDoItem> => {
+    updateTask = async (id: string, description: string, completed: boolean): Promise<boolean> => {
         const task = new ToDoItem(description, completed, id);
         const db: Db = getDb();
         const resp = await db.collection(collectionName).findOneAndUpdate(
             { "id": task.id },
             { $set: { "completed": task.completed } }
         );
-
-        console.log(resp);
-        return task;
+        return !!resp.value;
     }
 
-    deleteOne = async (id: string): Promise<string> => {
+    deleteOne = async (id: string): Promise<boolean> => {
         const db: Db = getDb();
         const query = { id };
         const resp = await db.collection(collectionName).deleteOne(query);
-        return "OK";
+        return !!resp?.deletedCount;
     }
 
-    deleteAll = async (): Promise<string> => {
+    deleteAll = async (): Promise<boolean> => {
         const db: Db = getDb();
         const query = {};
         const resp = await db.collection(collectionName).deleteMany(query);
-        return "OK";
+        return !!resp?.deletedCount;
     }
 } 

@@ -10,8 +10,10 @@ const config = (app: Application) => {
     app.use((req, res, next) => {
 
         // Website you wish to allow to connect
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-        res.setHeader('Access-Control-Allow-Origin', 'https://dev-to-do-list-mike.netlify.app');
+        // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        const allowOrigin = process.env.ALLOW_ORIGIN || "*";
+
+        res.setHeader('Access-Control-Allow-Origin', allowOrigin);
 
         // Request methods you wish to allow
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

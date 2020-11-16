@@ -1,40 +1,41 @@
 import { Application, Request, Response, NextFunction } from 'express';
+import CommonResponse from '../Models/Response';
 import ToDoItem from '../Models/ToDoItem';
 import ToDoService from '../Services/ToDoService';
 
 const toDoService = new ToDoService();
 
 const ToDoController = async (app: Application) => {
-    app.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
         const items = await toDoService.getToDoItems();
-        res.send(items);
+        new CommonResponse(res, items).send();
         next();
     });
 
     app.post('/add', async (req: Request, res: Response, next: NextFunction) => {
         const { description, completed } = req.body;
-        await toDoService.addToDoItem(description, completed);
-        res.status(200).send('OK');
+        const addedItem = await toDoService.addToDoItem(description, completed);
+        new CommonResponse(res, addedItem).send();
         next();
     });
 
     app.post('/update', async (req: Request, res: Response, next: NextFunction) => {
         const { id, description, completed } = req.body;
-        await toDoService.updateTask(id, description, completed);
-        res.status(200).send('OK');
+        const success = await toDoService.updateTask(id, description, completed);
+        new CommonResponse(res, {}, success).send();
         next();
     });
 
     app.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        await toDoService.deleteOne(id);
-        res.status(200).send('OK');
+        const success = await toDoService.deleteOne(id);
+        new CommonResponse(res, {}, success).send();
         next();
     });
 
     app.delete('/all', async (req: Request, res: Response, next: NextFunction) => {
-        await toDoService.deleteAll();
-        res.status(200).send('OK');
+        const success = await toDoService.deleteAll();
+        new CommonResponse(res, {}, success).send();
         next();
     });
 }
